@@ -1,16 +1,50 @@
-# This is a sample Python script.
+from flask import Flask, request, jsonify
+from db import get_connection
 
-# Press Ctrl+F5 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+app = Flask(__name__)
+conn = get_connection()
+cur = conn.cursor()
+
+# Get measurements for a day
+@app.route("/measurements")
+def measurements():
+    location = request.args.get("location")
+    date = request.args.get("date")
+
+    cur.execute("""
+        SELECT * FROM measurements
+        WHERE location_id=%s AND DATE(timestamp)=%s
+    """, (location, date))
+
+    return jsonify(cur.fetchall())
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press F9 to toggle the breakpoint.
+# Count measurements
+@app.route("/count")
+def count():
+    location = request.args.get("location")
+
+    cur.execute("""
+        SELECT COUNT(*) FROM measurements WHERE location_id=%s
+    """, (location,))
+
+    return jsonify(cur.fetchone())
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# Average value
+@app.route("/average")
+def average():
+    location = request.args.get("location")
+    sensor = request.args.get("sensor")
+    date = request.args.get("date")
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    cur.execute("""
+        SELECT AVG(value)
+        FROM measurements
+        WHERE location_id=%s AND sensor_id=%s AND DATE(timestamp)=%s
+    """, (location, sensor, date))
+
+    return jsonify(cur.fetchone())
+
+if __name__ == "__main__":
+    app.run(debug=True)
