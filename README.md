@@ -1,3 +1,25 @@
+This project is a REST API built with Flask to access air quality data stored in PostgreSQL.
+
+## Testing in the browser
+When the application is running: *Running on http://127.0.0.1:5000*
+
+### 1. Measurements for one day at the selected location
+example of a link for day: location_id=2975, date=2023-01-01
+http://127.0.0.1:5000/measurements/day?location_id=2975&date=2023-01-01
+<img width="609" height="500" alt="DailyData" src="https://github.com/user-attachments/assets/e18a5033-9b36-4f4e-b54c-72feeab0d341" />
+
+### 2. The number of all measurements at the selected measurement location
+example of a link for count: location_id=2975
+http://127.0.0.1:5000/measurements/count?location_id=2975
+<img width="505" height="139" alt="Count" src="https://github.com/user-attachments/assets/7735f843-5276-4424-b6f2-a8a4eea3f301" />
+
+### 3. Daily average value for the selected measurement location and sensor
+example of a link for average: location_id=2975, sensor=pm10, date=2023-01-01
+http://127.0.0.1:5000/measurements/average?location_id=2975&sensor=pm10&date=2023-01-01
+<img width="732" height="176" alt="Average" src="https://github.com/user-attachments/assets/b0b9b12d-673e-4815-b128-72a737288da6" />
+
+---
+
 ### This work is a continuation from
 [**Maxim-91/openaq-ingestion**](https://github.com/Maxim-91/openaq-ingestion)
 
@@ -48,8 +70,13 @@ CREATE TABLE measurements (
 );
 ```
 
+## requirements.txt
 
-## Testing and Execution
+To install the required dependencies using the `requirements.txt` file, run the following command in the PyCharm terminal (**ensure your `.venv` is active**):
+
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
